@@ -98,7 +98,7 @@
 
 # 🧬 Background
 
-## 🆙 Level
+## 🆙 Level (Idade)
 <img src="./level.svg" alt="Level atual" width="120"/>
 
 ## 🎓 Formação
