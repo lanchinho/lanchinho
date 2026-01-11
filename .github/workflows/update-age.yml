@@ -1,0 +1,45 @@
+name: Update Level Badge
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Atualiza todo dia à meia-noite
+  workflow_dispatch:
+
+jobs:
+  update-level:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Calculate level (age)
+        run: |
+          BIRTHDATE="1991-04-25"
+          TODAY=$(date +%Y-%m-%d)
+          LEVEL=$(($(date -d "$TODAY" +%Y) - $(date -d "$BIRTHDATE" +%Y)))
+
+          if [ "$(date -d "$TODAY" +%m%d)" -lt "$(date -d "$BIRTHDATE" +%m%d)" ]; then
+            LEVEL=$((LEVEL - 1))
+          fi
+
+          echo "LEVEL=$LEVEL" >> $GITHUB_ENV
+
+      - name: Generate dynamic level badge
+        run: |
+          cat > level.svg <<EOF
+          <svg xmlns="http://www.w3.org/2000/svg" width="150" height="30">
+            <rect width="150" height="30" fill="#222"/>
+            <rect x="70" width="80" height="30" fill="#8A2BE2"/>
+            <text x="10" y="20" fill="#fff" font-family="Verdana" font-size="14">Level</text>
+            <text x="90" y="20" fill="#fff" font-family="Verdana" font-size="14">$LEVEL</text>
+          </svg>
+          EOF
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add level.svg
+          git commit -m "Atualizando badge de level" || echo "Nenhuma mudança necessária"
+          git push

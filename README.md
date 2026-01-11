@@ -98,8 +98,8 @@
 
 # 🧬 Background
 
-## 🕰️ Idade
-**34 anos**
+## 🆙 Level
+<img src="./level.svg" alt="Level atual" width="120"/>
 
 ## 🎓 Formação
 **Bacharel em Sistemas de Informação — UNIRIO**
